@@ -15,8 +15,8 @@ To add this package into your dbt project you need to make an entry in the packa
 
 ### Macros
 
-- [generate_schema_name](#generateschemaname) [source](./macros/generate_schema_name.sql)
-- [smart_source](#smartsource) [source](./macros/smart_source.sql)
+- [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql)
+- [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
 
 
 ### Usage 
