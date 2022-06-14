@@ -35,7 +35,7 @@ You can use the codegen package to have the script generated and then replace `s
 
 Snippets to generate base mode code for reference
 
-Executing using scratchpad
+Executing using scratchpad/statement tab in dbtCloud IDE
 ```
 {{ codegen.generate_base_model(
     source_name='<source_name>',
@@ -43,7 +43,7 @@ Executing using scratchpad
 ) }}
 ```
 
-Execting the macro as an operation
+Executing the macro as an operation
 ```
 dbt run-operation generate_base_model --args '{"source_name": "<source_name>", "table_name": "<table_name>"}'
 ```
