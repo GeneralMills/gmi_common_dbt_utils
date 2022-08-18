@@ -17,7 +17,10 @@ To add this package into your dbt project you need to make an entry in the packa
 
 - [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql)
 - [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
-
+- [optimized_data_loader](#optimized_data_loader) [(source)](./macros/optimized_data_loader.sql)
+- [data_type_optimizor_v2](#data_type_optimizor) [(source)](./macros/data_type_optimizor.sql) (to be used as internal macro)
+- [find_proposed_column_for_numbers](#find_proposed_column_for_numbers) [(source)](./macros/optimized_dataload/data_type_optimization_helper.sql) (to be used as internal macro)
+- [find_proposed_column_for_boolean](#find_proposed_column_for_boolean) [(source)](./macros/optimized_dataload/data_type_optimization_helper.sql) (to be used as internal macro)
 
 ### Usage 
 #### generate_schema_name
@@ -64,4 +67,24 @@ renamed as (
 ),
 
 select * from renamed
+```
+
+#### optimized_data_loader
+
+This macro is helpful to begin the optimized data load in the table it is designed in such a way that it also calls the data_type_optimizer when required initially.
+
+Executing using scrachpad/statement tab in dbtCloud IDE
+
+```sql
+select * from ({{ optimized_data_loader (source('<source_name>', '<table_name>')) }})
+```
+
+#### data_type_optimizor_v2
+
+This macro is helpful to create the optimized table .
+
+Executing using scrachpad/statement tab in dbtCloud IDE
+
+```sql
+    select * from ({{ data_type_optimizor_v2 (source('<source_name>', '<table_name>'), 'false'  ) }})
 ```
