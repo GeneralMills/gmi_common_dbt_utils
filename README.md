@@ -29,7 +29,7 @@ This overwrites the default implementation of generate_schema_name from the core
 ```
 
 #### smart_source
-This macro helps use keep a check on the bigquery costs and at the same time validate sql queries end to end.
+This macro helps us keep a check on the bigquery costs and at the same time validate sql queries end to end.
 You can use the codegen package to have the script generated and then replace `source` with `smart_source`.
 [Link](https://github.com/dbt-labs/dbt-codegen#usage-1) on usage of codegen for generating SQL for a base model
 
