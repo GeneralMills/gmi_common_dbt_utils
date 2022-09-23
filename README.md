@@ -9,8 +9,6 @@ To add this package into your dbt project you need to make an entry in the packa
 ```yml
   - git: "https://github.com/GeneralMills/gmi_common_dbt_utils.git"
     revision: main # use a branch or a tag name
-  - git: "https://github.com/dbt-labs/dbt-labs-experimental-features.git"
-    subdirectory: "materialized-views" # for the materialized views package
 ```
 
 ## How to update this repo
