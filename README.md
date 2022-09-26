@@ -11,12 +11,17 @@ To add this package into your dbt project you need to make an entry in the packa
     revision: main # use a branch or a tag name
 ```
 
+## How to update this repo
+
+To update this repo, you will need write access to the General Mills public repo. 
+
 ## Contents
 
 ### Macros
 
 - [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql)
 - [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
+- [materialized_views](#materialized_views) [(source)](./macros/bigquery)
 
 
 ### Usage 
@@ -65,3 +70,13 @@ renamed as (
 
 select * from renamed
 ```
+
+#### materialized_views
+Materialized views are powerful but they can be costly, so please consult with the Analytics team if you are thinking about using them. This feature is also in beta with dbt. To use a materialized view, in the the `dbt_project.yml` file, add a `materialized_views` block in the models section, similar to this:
+
+    output: 
+      +materialized: table
+      +schema: output
+      materialized_views: 
+        +materialized: materialized_view
+        +schema: output
