@@ -13,7 +13,7 @@ To add this package into your dbt project you need to make an entry in the packa
 
 ## How to update this repo
 
-To update this repo, you will need write access to the General Mills public repo. 
+To update this repo, you will need write access to the General Mills public repo. Once your changes have been peer-reviewed and approved, you will need to create a new release for the repo.
 
 ## Contents
 
