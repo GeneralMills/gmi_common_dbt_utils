@@ -42,7 +42,7 @@ cluster by dbt_cloud_run_id
                 '{{ result.node.config.severity }}' as test_severity,
                 '{{ result.status }}' as test_result,
                 '{% for node_id in result.node.depends_on.nodes -%}
-                    {{ gmi_common_dbt_utils._get_full_model_name(node_id) }}
+                    {{ gmi_common_dbt_utils.get_full_model_name(node_id) }}
                     {%- if not loop.last -%},{%- endif -%}
                 {%- endfor %}' as test_models,
                 '{{ result.execution_time }}' as execution_time_seconds,

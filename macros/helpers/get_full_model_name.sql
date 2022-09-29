@@ -1,4 +1,4 @@
-{%- macro _get_full_model_name(node_id) -%}
+{%- macro get_full_model_name(node_id) -%}
     {%- set node_list = [] -%}
     {%- if node_id.split('.')[0] == 'model' -%}
         {%- set node_list = graph.nodes.values() | selectattr("resource_type", "equalto", "model") -%}
