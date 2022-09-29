@@ -22,6 +22,8 @@ To update this repo, you will need write access to the General Mills public repo
 - [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql)
 - [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
 - [materialized_views](#materialized_views) [(source)](./macros/bigquery)
+- [save_test_results](#save_test_results) [(source)](./macros/save_test_results.sql)
+   - uses helper macro [generate_schema_name](#generate_schema_name) [(source)](./macros/helpers/generate_schema_name.sql)
 
 
 ### Usage 
@@ -80,3 +82,17 @@ Materialized views are powerful but they can be costly, so please consult with t
       materialized_views: 
         +materialized: materialized_view
         +schema: output
+
+
+#### save_test_results
+This macro saves dbt data quality test results to a table in the target project's processed dataset: `processed.dbt_test_results`. This is an append-only table that associates each data quality check/result to a particular dbt run. For development runs (zdev), a separate results table will be created in the corresponding zdev processed dataset.
+
+Runs that are associated with a dbt Cloud job will be associated with their corresponding `DBT_CLOUD_RUN_ID`, while runs that were kicked off from the CLI are associated with their `invocation_id` (since they are not given a cloud run id).
+
+To use this macro within a project, include the following in the `dbt_project.yml`:
+```yml
+# SQL statements to be executed after the completion of a run, build, test, etc.
+# Full documentation: https://docs.getdbt.com/reference/project-configs/on-run-start-on-run-end
+on-run-end:
+  - '{{ save_test_results(results) }}'
+```
