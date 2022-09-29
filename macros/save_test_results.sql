@@ -30,27 +30,27 @@ create table if not exists {{ results_tbl }} (
 cluster by dbt_cloud_run_id
 ;
 
-insert into {{ results_tbl }} (
-
-    {% for result in test_results %}
-        select
-            '{{ result.node.unique_id }}' as test_id,
-            '{{ result.node.name }}' as test_name,
-            '{{ project_name }}' as project_name,
-            '{{ target.database }}' as target_db,
-            '{{ env_var("DBT_RUN_ENV") }}' as dbt_run_env,
-            '{{ result.node.config.severity }}' as test_severity,
-            '{{ result.status }}' as test_result,
-            '{% for node_id in result.node.depends_on.nodes -%}
-                {{ _get_full_model_name(node_id) }}
-                {%- if not loop.last -%},{%- endif -%}
-            {%- endfor %}' as test_models,
-            '{{ result.execution_time }}' as execution_time_seconds,
-            '{{ env_var("DBT_CLOUD_RUN_ID", invocation_id) }}' as dbt_cloud_run_id,
-            current_timestamp() as create_update_ts
-
-        {{ 'union all' if not loop.last }}
-    {% endfor %}
-);
+{% if test_results|length > 0 %}
+    insert into {{ results_tbl }} (
+        {% for result in test_results %}
+            select
+                '{{ result.node.unique_id }}' as test_id,
+                '{{ result.node.name }}' as test_name,
+                '{{ project_name }}' as project_name,
+                '{{ target.database }}' as target_db,
+                '{{ env_var("DBT_RUN_ENV") }}' as dbt_run_env,
+                '{{ result.node.config.severity }}' as test_severity,
+                '{{ result.status }}' as test_result,
+                '{% for node_id in result.node.depends_on.nodes -%}
+                    {{ get_full_model_name(node_id) }}
+                    {%- if not loop.last -%},{%- endif -%}
+                {%- endfor %}' as test_models,
+                '{{ result.execution_time }}' as execution_time_seconds,
+                '{{ env_var("DBT_CLOUD_RUN_ID", invocation_id) }}' as dbt_cloud_run_id,
+                current_timestamp() as create_update_ts
+            {{ 'union all' if not loop.last }}
+        {% endfor %}
+    );
+{% endif %}
 
 {% endmacro %}
