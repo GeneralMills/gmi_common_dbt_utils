@@ -9,7 +9,7 @@
 {%- endfor -%}
 
 {%- set results_tbl -%}
-    `{{ target.database }}.{{ generate_schema_name('processed') }}.dbt_test_results`
+    `{{ target.database }}.{{ gmi_common_dbt_utils.generate_schema_name('processed') }}.dbt_test_results`
 {%- endset -%}
 
 {{ log('Centralizing test data in ' + results_tbl, info = true) if execute }}
@@ -42,7 +42,7 @@ cluster by dbt_cloud_run_id
                 '{{ result.node.config.severity }}' as test_severity,
                 '{{ result.status }}' as test_result,
                 '{% for node_id in result.node.depends_on.nodes -%}
-                    {{ _get_full_model_name(node_id) }}
+                    {{ gmi_common_dbt_utils._get_full_model_name(node_id) }}
                     {%- if not loop.last -%},{%- endif -%}
                 {%- endfor %}' as test_models,
                 '{{ result.execution_time }}' as execution_time_seconds,
