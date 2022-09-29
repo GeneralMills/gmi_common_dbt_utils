@@ -94,5 +94,5 @@ To use this macro within a project, include the following in the `dbt_project.ym
 # SQL statements to be executed after the completion of a run, build, test, etc.
 # Full documentation: https://docs.getdbt.com/reference/project-configs/on-run-start-on-run-end
 on-run-end:
-  - '{{ save_test_results(results) }}'
+  - '{{ gmi_common_dbt_utils.save_test_results(results) }}'
 ```
