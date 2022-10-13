@@ -96,3 +96,18 @@ To use this macro within a project, include the following in the `dbt_project.ym
 on-run-end:
   - '{{ gmi_common_dbt_utils.save_test_results(results) }}'
 ```
+
+
+#### Big Query Catalog Macro
+The `bq_catalog.sql` Macro overrides the default macro that gathers the metadata necessary for generating dbt docs.
+The default macro queries the `project.dataset.__TABLES__` metadata table,
+which requires more elevated permissions than the information schema tables.
+Our dbt service accounts do not typically have access to query __TABLES__, especially in EDW datasets.
+This custom implementation uses `project.dataset.INFORMATION_SCHEMA.TABLES` in addition to TABLE_STORAGE instead.
+
+> **_NOTE:_**
+In order to access the table_schema in the process of generating the documenation,
+you must specify the Big Query region where your data is housed. Add the following two lines to your
+project variables, substituting the Big Query region of your project.
+vars:
+bq_region: 'region-US'
