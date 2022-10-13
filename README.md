@@ -23,7 +23,7 @@ To update this repo, you will need write access to the General Mills public repo
 - [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
 - [materialized_views](#materialized_views) [(source)](./macros/bigquery)
 - [save_test_results](#save_test_results) [(source)](./macros/save_test_results.sql)
-   - uses helper macro [generate_schema_name](#generate_schema_name) [(source)](./macros/helpers/generate_schema_name.sql)
+   - uses macros [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql) and `get_full_model_name` [source](./macros/helpers/generate_schema_name.sql)
 
 
 ### Usage 
