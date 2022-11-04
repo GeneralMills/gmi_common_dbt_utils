@@ -24,6 +24,8 @@ To update this repo, you will need write access to the General Mills public repo
 - [materialized_views](#materialized_views) [(source)](./macros/bigquery)
 - [save_test_results](#save_test_results) [(source)](./macros/save_test_results.sql)
    - uses macros [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql) and `get_full_model_name` [source](./macros/helpers/generate_schema_name.sql)
+- [big_query_catalog_macro](#big_query_catalog_macro) [(source)](./macros/bq_catalog)
+- [not_null_constraint](#not_null) [(source)](./macros/bigquery)
 
 
 ### Usage 
@@ -74,7 +76,7 @@ select * from renamed
 ```
 
 #### materialized_views
-Materialized views are powerful but they can be costly, so please consult with the Analytics team if you are thinking about using them. This feature is also in beta with dbt. To use a materialized view, in the the `dbt_project.yml` file, add a `materialized_views` block in the models section, similar to this:
+Materialized views are powerful but they can be costly, so please consult with the Analytics team if you are thinking about using them. This feature is also in _beta_ with dbt. To use a materialized view, in the the `dbt_project.yml` file, add a `materialized_views` block in the models section, similar to this:
 
     output: 
       +materialized: table
@@ -111,3 +113,40 @@ you must specify the Big Query region where your data is housed. Add the followi
 project variables, substituting the Big Query region of your project.
 vars:
 bq_region: 'region-US'
+
+
+
+#### not_null constraint
+The purpose of this macro is to require a column _not_ to be `NULLABLE`. (By default, if the mode is not specified BigQuery defaults to `NULLABLE`.) 
+
+This feature is also in _beta_ with dbt. More documentation from dbt is available [here](https://gist.github.com/sungchun12/f7ea081773ae824a83294649530d6e41). 
+
+To utilize this, you must add a `config` at the top of your model (`.sql` file), like this:
+
+```sql
+{{
+  config(
+    materialized = "table_with_constraints"
+  )
+}}
+```
+
+Then in the .yml file, you _must_ specify every column. Each time fields are added or removed after this, the `yml` file must be updated, or the run will fail.
+```yml
+version: 2
+
+models:
+  - name: table_constraints_demo
+    config:
+      has_constraints: true
+    columns:
+      - name: id
+        data_type: int64
+        description: I want to describe this one, but I don't want to list all the columns
+        meta:
+          constraint: not null
+      - name: color
+        data_type: string
+      - name: date_day
+        data_type: date
+```
