@@ -69,7 +69,7 @@ add column if not exists file_test_defined string
                 {%- endfor %}' as test_models,
                 '{{ result.execution_time }}' as execution_time_seconds,
                 '{{ env_var("DBT_CLOUD_RUN_ID", invocation_id) }}' as dbt_cloud_run_id,
-                current_timestamp() as create_update_ts.
+                current_timestamp() as create_update_ts,
                 '{{ test_short_name }}' as test_short_name,
                 '{{ test_type }}' as test_type,
                 '{{ result.node.original_file_path }}' as file_test_defined
