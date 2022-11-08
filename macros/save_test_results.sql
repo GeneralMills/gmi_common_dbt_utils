@@ -30,9 +30,31 @@ create table if not exists {{ results_tbl }} (
 cluster by dbt_cloud_run_id
 ;
 
+-- alter statements allow backward compatibility
+alter table {{ results_tbl }}
+add column if not exists test_short_name string
+;
+alter table {{ results_tbl }}
+add column if not exists test_type string
+;
+alter table {{ results_tbl }}
+add column if not exists file_test_defined string
+;
+
 {% if test_results|length > 0 %}
     insert into {{ results_tbl }} (
         {% for result in test_results %}
+
+            {%- set test_short_name='' -%}
+            {%- set test_type='' -%}
+            {%- if result.node.test_metadata is defined -%}
+                {%- set test_short_name = result.node.test_metadata.name -%}
+                {%- set test_type='generic' -%}
+            {%- elif result.node.name is defined -%}
+                {%- set test_short_name = result.node.name -%}
+                {%- set test_type='singular' -%}
+            {%- endif -%}
+
             select
                 '{{ result.node.unique_id }}' as test_id,
                 '{{ result.node.name }}' as test_name,
@@ -47,7 +69,10 @@ cluster by dbt_cloud_run_id
                 {%- endfor %}' as test_models,
                 '{{ result.execution_time }}' as execution_time_seconds,
                 '{{ env_var("DBT_CLOUD_RUN_ID", invocation_id) }}' as dbt_cloud_run_id,
-                current_timestamp() as create_update_ts
+                current_timestamp() as create_update_ts,
+                '{{ test_short_name }}' as test_short_name,
+                '{{ test_type }}' as test_type,
+                '{{ result.node.original_file_path }}' as file_test_defined
             {{ 'union all' if not loop.last }}
         {% endfor %}
     );
