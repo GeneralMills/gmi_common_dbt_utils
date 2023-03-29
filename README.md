@@ -23,9 +23,8 @@ To update this repo, you will need write access to the General Mills public repo
 - [smart_source](#smart_source) [(source)](./macros/smart_source.sql)
 - [materialized_views](#materialized_views) [(source)](./macros/bigquery)
 - [save_test_results](#save_test_results) [(source)](./macros/save_test_results.sql)
-   - uses macros [generate_schema_name](#generate_schema_name) [(source)](./macros/generate_schema_name.sql) and `get_full_model_name` [source](./macros/helpers/generate_schema_name.sql)
-- [big_query_catalog_macro](#big_query_catalog_macro) [(source)](./macros/bq_catalog)
-- [not_null_constraint](#not_null) [(source)](./macros/bigquery)
+- [big_query_catalog_macro](#big-query-catalog-macro) [(source)](./macros/bq_catalog)
+- [not_null_constraint](#not_null-constraint) [(source)](./macros/bigquery)
 
 
 ### Usage 
@@ -104,7 +103,7 @@ on-run-end:
 The `bq_catalog.sql` Macro overrides the default macro that gathers the metadata necessary for generating dbt docs.
 The default macro queries the `project.dataset.__TABLES__` metadata table,
 which requires more elevated permissions than the information schema tables.
-Our dbt service accounts do not typically have access to query __TABLES__, especially in EDW datasets.
+Our dbt service accounts do not typically have access to query `__TABLES__`, especially in EDW datasets.
 This custom implementation uses `project.dataset.INFORMATION_SCHEMA.TABLES` in addition to TABLE_STORAGE instead.
 
 > **_NOTE:_**
