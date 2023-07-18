@@ -1,0 +1,10 @@
+# Set text handlings to auto and eol
+# linux line endings
+* text=auto eol=lf
+
+# Ensure windows line endings are used
+# for windows bat/cmd scripts
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+
+/macros/**/*.sql linguist-language=jinja

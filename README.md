@@ -36,6 +36,14 @@ This overwrites the default implementation of generate_schema_name from the core
 {{generate_schema_name('input')}}
 ```
 
+To use, add a macro to your macros directory with the following contents:
+
+```jinja
+{% macro generate_schema_name(custom_schema_name, node) -%}
+    {{ gmi_common_dbt_utils.generate_schema_name(custom_schema_name, node) }}
+{%- endmacro %}
+```
+
 #### smart_source
 This macro helps us keep a check on the bigquery costs and at the same time validate sql queries end to end.
 You can use the codegen package to have the script generated and then replace `source` with `smart_source`.
@@ -44,7 +52,7 @@ You can use the codegen package to have the script generated and then replace `s
 Snippets to generate base mode code for reference
 
 Executing using scratchpad/statement tab in dbtCloud IDE
-```
+```jinja
 {{ codegen.generate_base_model(
     source_name='<source_name>',
     table_name='<table_name>'
@@ -122,7 +130,7 @@ This feature is also in _beta_ with dbt. More documentation from dbt is availabl
 
 To utilize this, you must add a `config` at the top of your model (`.sql` file), like this:
 
-```sql
+```jinja
 {{
   config(
     materialized = "table_with_constraints"
