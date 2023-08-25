@@ -9,4 +9,4 @@
   {% else %}
     {{source(source_name, table_name)}}
   {% endif %}
-	
+{% endmacro %}
