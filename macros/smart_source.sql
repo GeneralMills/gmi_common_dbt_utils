@@ -1,6 +1,11 @@
 {% macro smart_source(source_name, table_name) %}
+  {%- set dbt_populate_dev_tables = env_var('DBT_POPULATE_DEV_TABLES') -%}
   {%- if env_var('DBT_RUN_ENV') == 'DEV' -%}
-    (select * from {{source(source_name,table_name) }} where 1 = 0) as __dbt_source_{{ table_name }} 
+    {%- if dbt_populate_dev_tables is defined and dbt_populate_dev_tables | upper == 'TRUE'-%}
+      {{source(source_name, table_name)}}
+    {% else %}
+      (select * from {{source(source_name,table_name) }} where 1 = 0) as __dbt_source_{{ table_name }} 
+    {% endif %}
   {% else %}
     {{source(source_name, table_name)}}
   {% endif %}
