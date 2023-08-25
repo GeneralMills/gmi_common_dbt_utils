@@ -50,10 +50,9 @@ This macro helps us keep a check on the bigquery costs and at the same time vali
 You can use the codegen package to have the script generated and then replace `source` with `smart_source`.
 [Link](https://github.com/dbt-labs/dbt-codegen#usage-1) on usage of codegen for generating SQL for a base model
 
-> **_NOTE:_**  With >= 0.6.0 to populate the tables in the development environment in standard datasets
-please add a environment variable `DBT_POPULATE_DEV_TABLES` and set it to `TRUE` if the environment variable
-does not exist it will continue with the default behaviour. The `DBT_POPULATE_DEV_TABLES` is not mandatory
-it is only required if you want to populate your development environment with actual data using the smart_source macro
+> **_NOTE:_**  To populate the tables in the development environment in standard datasets create a job with `Dev Deployment` Environment
+This macro is dependent on `DBT_RUN_ENV` and `DBT_USE_ZDEV_DATASET` environment variables. A combination of `DBT_RUN_ENV` set to `DEV`
+and `DBT_USE_ZDEV_DATASET` set to `TRUE` keeps the table empty but helps validate the sql queries end to end.
 
 Snippets to generate base mode code for reference
 
